@@ -100,6 +100,7 @@ impl Client {
         let resp: Tracks = self.get(&url, pagination).await?;
         Ok(resp)
     }
+
     pub async fn get_user_reposts_by_id(
         &self,
         id: &str,
