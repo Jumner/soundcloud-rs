@@ -156,6 +156,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - **`get_user_playlists_by_urn(urn: &str, pagination: Option<&Paging>) -> Result<Playlists, Box<dyn Error>>`**
 - **`get_user_tracks_by_id(id: &str, pagination: Option<&Paging>) -> Result<Tracks, Box<dyn Error>>`**
 - **`get_user_tracks_by_urn(urn: &str, pagination: Option<&Paging>) -> Result<Tracks, Box<dyn Error>>`**
+- **`get_user_reposts_by_id(id: &str, pagination: Option<&Paging>) -> Result<Reposts, Box<dyn Error>>`**
+- **`get_user_reposts_by_urn(urn: &str, pagination: Option<&Paging>) -> Result<Reposts, Box<dyn Error>>`**
 
 ## Notes on Downloads and FFmpeg
 - **HLS downloads** use `ffmpeg-sidecar`. On first HLS download, the crate will automatically download an FFmpeg binary for your platform. No manual installation is required.
