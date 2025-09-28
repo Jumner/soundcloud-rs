@@ -14,4 +14,5 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
 pub struct PagingCollection<T> {
     pub collection: Vec<T>,
+    pub next_href: Option<String>,
 }
