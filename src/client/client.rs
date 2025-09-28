@@ -21,9 +21,7 @@ impl Client {
         Err("Client ID not found".into())
     }
 
-    pub async fn get_json_url<R: DeserializeOwned, Q: Serialize>(
-        url: &str,
-    ) -> Result<R, Box<dyn Error>> {
+    pub async fn get_json_url<R: DeserializeOwned>(url: &str) -> Result<R, Box<dyn Error>> {
         {
             let client = reqwest::Client::new();
             let request = client.get(url);
