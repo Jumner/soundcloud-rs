@@ -21,22 +21,21 @@ impl Client {
         Err("Client ID not found".into())
     }
 
-    pub async fn get_json_url<R: DeserializeOwned>(url: &str) -> Result<R, Box<dyn Error>> {
-        {
-            let client = reqwest::Client::new();
-            let request = client.get(url);
-            let response = request.send().await.map_err(|e| {
-                println!("Error sending request: {}", e);
-                Box::new(e) as Box<dyn Error>
-            })?;
+    pub async fn get_json_url<R: DeserializeOwned>(&self, url: &str) -> Result<R, Box<dyn Error>> {
+        let client = reqwest::Client::new();
+        let mut request = client.get(url);
+        request = request.query(&[("client_id", &self.client_id)]);
+        let response = request.send().await.map_err(|e| {
+            println!("Error sending request: {}", e);
+            Box::new(e) as Box<dyn Error>
+        })?;
 
-            let body = response.json::<R>().await.map_err(|e| {
-                println!("Error parsing response: {}", e);
-                Box::new(e) as Box<dyn Error>
-            })?;
+        let body = response.json::<R>().await.map_err(|e| {
+            println!("Error parsing response: {}", e);
+            Box::new(e) as Box<dyn Error>
+        })?;
 
-            Ok(body)
-        }
+        Ok(body)
     }
 
     pub async fn get_json<R: DeserializeOwned, Q: Serialize>(
