@@ -74,7 +74,9 @@ impl Client {
             }
         }
 
-        let transcoding = self.get_transcoding_by_stream_type(track, stream_type).await?;
+        let transcoding = self
+            .get_transcoding_by_stream_type(track, stream_type)
+            .await?;
         let stream_url = self.get_stream_url(track, stream_type).await?;
 
         match transcoding
@@ -106,7 +108,9 @@ impl Client {
         track: &Track,
         stream_type: Option<&StreamType>,
     ) -> Result<String, Box<dyn Error>> {
-        let transcoding = self.get_transcoding_by_stream_type(track, stream_type).await?;
+        let transcoding = self
+            .get_transcoding_by_stream_type(track, stream_type)
+            .await?;
         let path = transcoding.url.as_ref().ok_or("Missing transcoding URL")?;
         let stream: Stream = Self::get_json(path, None, None::<&()>, &self.client_id).await?;
         stream.url.ok_or("Missing resolved stream URL".into())
@@ -139,20 +143,21 @@ impl Client {
                         continue;
                     }
                 }
-        
+
                 let path = match t.url.as_ref() {
                     Some(u) => u,
                     None => continue,
                 };
-        
-                let stream: Stream = Self::get_json(path, None, None::<&()>, &self.client_id).await?;
+
+                let stream: Stream =
+                    Self::get_json(path, None, None::<&()>, &self.client_id).await?;
                 if stream.url.is_some() {
                     return Ok(t.clone());
                 }
             }
             None
         };
-        Ok(transcoding.expect("No available download options"))
+        transcoding.ok_or(Box::from("No available download options"))
     }
 
     async fn download_progressive(
